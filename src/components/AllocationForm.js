@@ -1,9 +1,10 @@
 import React, { useContext, useState } from 'react';
 import { AppContext } from '../context/AppContext';
+import Currency from './Currency';
 
 const AllocationForm = (props) => {
     // Access the 'dispatch' and 'remaining' values from AppContext using useContext
-    const { dispatch, remaining } = useContext(AppContext);
+    const { dispatch, remaining,budget,currency } = useContext(AppContext);
 
     // Define state variables for form inputs
     const [name, setName] = useState(''); // Department name
@@ -18,6 +19,8 @@ const AllocationForm = (props) => {
             setCost(''); // Clear the cost input
             return;
         }
+
+ 
 
         // Create an 'expense' object with the selected department name and cost
         const expense = {
@@ -55,23 +58,27 @@ const AllocationForm = (props) => {
                     </select>
 
                     {/* Allocation action selection dropdown */}
-                    <div className="input-group-prepend" style={{ marginLeft: '2rem' }}>
+                    <div className="input-group-prepend" style={{ marginLeft: '2rem'}}>
                         <label className="input-group-text" htmlFor="inputGroupSelect02">Allocation</label>
                     </div>
-                    <select className="custom-select" id="inputGroupSelect02" onChange={(event) => setAction(event.target.value)}>
+                    <select className="custom-select" id="inputGroupSelect02" onChange={(event) => setAction(event.target.value)} style={{ marginRight: '2rem'}} >
                         <option defaultValue value="Add" name="Add">Add</option>
                         <option value="Reduce" name="Reduce">Reduce</option>
                     </select>
 
-                    {/* Cost input field */}
-                    <input
-                        required='required'
-                        type='number'
-                        id='cost'
-                        value={cost}
-                        style={{ marginLeft: '2rem', size: 10 }}
-                        onChange={(event) => setCost(event.target.value)}
-                    />
+                    {/* allocation change input field */}
+                    <div >
+                        {currency} <input
+                            required='required'
+                            type='number'                      
+                            id='cost'
+                            min = "0"
+                            max = {remaining}
+                            value={cost}
+                            onChange={(event) => setCost(event.target.value)}
+                        />
+                    </div>
+                    
 
                     {/* Save button */}
                     <button className="btn btn-primary" onClick={submitEvent} style={{ marginLeft: '2rem' }}>
